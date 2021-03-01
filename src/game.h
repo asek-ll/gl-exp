@@ -3,8 +3,8 @@
 
 class Game {
 public:
-  void render(float dt);
-  void update(float dt);
+    void render(float dt);
+    void update(float dt);
 };
 
 #endif /* __GAME_H__ */

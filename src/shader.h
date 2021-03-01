@@ -4,22 +4,17 @@
 #include <string>
 #include <glad/glad.h>
 
-struct Shader {
-  GLenum type;
-  const char* path;
-};
-
 class ShaderProgram {
 
+    GLuint id;
 
 public:
-  GLuint id;
 
-  ShaderProgram(const char* vertexPath, const char * fragmentPath);
-  void use() const;
-  void setBool(const char* name, bool value) const;  
-  void setInt(const char* name, int value) const;   
-  void setFloat(const char* name, float value) const;
+    ShaderProgram(const char* vertexPath, const char * fragmentPath);
+    void use() const;
+    void setBool(const char* name, bool value) const;
+    void setInt(const char* name, int value) const;
+    void setFloat(const char* name, float value) const;
 
 };
 
