@@ -5,6 +5,7 @@
 
 #include "game.h"
 #include "shader.h"
+#include "field.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -35,7 +36,7 @@ int main()
         return -1;
     }
 
-    ShaderProgram shaderProgram("../shaders/shader.vs", "../shaders/shader.fs");
+    ShaderProgram shaderProgram("../shaders/shader.vs", "../shaders/shader.fs", nullptr);
 
     float vertices[] = {
         // positions         // colors
@@ -66,6 +67,11 @@ int main()
 
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+    Field field;
+
+    field.Init();
+
+
     float timeValue = glfwGetTime();
     float dx = 0;
 
@@ -81,6 +87,8 @@ int main()
 
         game.render(0.0);
 
+        field.setData(rand() % 10, rand() % 18, rand() % 100);
+
 
         glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
@@ -90,6 +98,8 @@ int main()
         shaderProgram.setFloat("dx", sin(dx));
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        field.Render();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -109,6 +119,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 void processInput(GLFWwindow *window)
 {
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
+    }
 }

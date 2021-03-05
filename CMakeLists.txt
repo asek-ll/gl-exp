@@ -26,3 +26,12 @@ target_link_libraries(${TARGET_NAME} glfw)
 find_package(OpenGL REQUIRED)
 target_link_libraries(${TARGET_NAME} OpenGL::GL)
 
+if (MSVC)
+    # warning level 4 and all warnings as errors
+    add_compile_options(/W4 /WX)
+else()
+    # lots of warnings and all warnings as errors
+    add_compile_options(-Wall -Wextra -pedantic -Werror)
+endif()
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

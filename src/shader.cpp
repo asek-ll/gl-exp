@@ -27,7 +27,7 @@ GLuint compileShader(const GLenum type, const char* source) {
     if (!success)
     {
         glGetShaderInfoLog(shader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+        std::cout << "ERROR::SHADER::" << (type == GL_VERTEX_SHADER ? "VERTEX": (type == GL_GEOMETRY_SHADER ? "GEOMETRY": "FRAGMENT")) << "::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 
     return shader;
@@ -39,7 +39,7 @@ GLuint loadAndCompileShader(const char* path, const GLenum type) {
     return compileShader(type, shaderStream.str().c_str());
 }
 
-ShaderProgram::ShaderProgram(const char* vertexPath, const char * fragmentPath) {
+ShaderProgram::ShaderProgram(const char* vertexPath, const char * fragmentPath, const char * geometryPath) {
 
     auto vertexId = loadAndCompileShader(vertexPath, GL_VERTEX_SHADER);
     auto fragmentId = loadAndCompileShader(fragmentPath, GL_FRAGMENT_SHADER);
@@ -48,6 +48,15 @@ ShaderProgram::ShaderProgram(const char* vertexPath, const char * fragmentPath) 
 
     glAttachShader(id, vertexId);
     glAttachShader(id, fragmentId);
+
+    GLuint geometryId;
+
+    if ( geometryPath != nullptr )
+    {
+        geometryId = loadAndCompileShader(geometryPath, GL_GEOMETRY_SHADER);
+        glAttachShader(id, geometryId);
+    }
+
 
     glLinkProgram(id);
 
@@ -59,6 +68,10 @@ ShaderProgram::ShaderProgram(const char* vertexPath, const char * fragmentPath) 
 
     glDeleteShader(vertexId);
     glDeleteShader(fragmentId);
+
+    if ( geometryPath != nullptr ) {
+        glDeleteShader(geometryId);
+    }
 }
 
 

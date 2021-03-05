@@ -10,7 +10,9 @@ class ShaderProgram {
 
 public:
 
-    ShaderProgram(const char* vertexPath, const char * fragmentPath);
+    ShaderProgram(const char* vertexPath,
+        const char * fragmentPath,
+        const char * geometryPath);
     void use() const;
     void setBool(const char* name, bool value) const;
     void setInt(const char* name, int value) const;
