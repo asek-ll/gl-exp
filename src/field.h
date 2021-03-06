@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <glad/glad.h>
 #include "shader.h"
+#include "shape.h"
 
 const std::size_t W = 10;
 const std::size_t H = 18;
@@ -15,14 +16,18 @@ class Field {
   GLfloat vertices[W * H * 3] = {0.0f};
   ShaderProgram *shader;
 
+  void setData(std::size_t x, std::size_t y, int color);
+
 public:
   
   const std::size_t Width = W;
   const std::size_t Heigth = H;
 
   void Init();
-  void setData(std::size_t x, std::size_t y, int color);
   void Render();
+  bool IsValidShape(Shape &shape, int x, int y);
+  void FreezeShape(Shape &shape, int color);
+  void WithShape(Shape &shape, int color);
 };
 
 #endif /* __FIELD_H__ */

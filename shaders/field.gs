@@ -1,25 +1,23 @@
 #version 450 core
 layout (points) in;
-layout (triangle_strip, max_vertices = 5) out;
+layout (triangle_strip, max_vertices = 4) out;
 
 in VS_OUT {
-    vec3 color;
+    vec4 color;
 } gs_in[];
 
-out vec3 ourColor;
+out vec4 ourColor;
 
 void createPrimitive(vec4 position)
 {    
     ourColor = gs_in[0].color;
-    gl_Position = position + vec4(-0.02, -0.02, 0.0, 0.0);
+    gl_Position = position + vec4(-0.04, -0.04, 0.0, 0.0);
     EmitVertex();   
-    gl_Position = position + vec4( 0.02, -0.02, 0.0, 0.0);
+    gl_Position = position + vec4( 0.05, -0.04, 0.0, 0.0);
     EmitVertex();
-    gl_Position = position + vec4(-0.02,  0.02, 0.0, 0.0);
+    gl_Position = position + vec4(-0.04,  0.05, 0.0, 0.0);
     EmitVertex();
-    gl_Position = position + vec4( 0.02,  0.02, 0.0, 0.0);
-    EmitVertex();
-    gl_Position = position + vec4( 0.0,  0.04, 0.0, 0.0);
+    gl_Position = position + vec4( 0.05,  0.05, 0.0, 0.0);
     EmitVertex();
     EndPrimitive();
 }

@@ -8,12 +8,12 @@
 #include "field.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow *window);
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
+Game game;
 
 int main()
 {
-    Game game;
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -29,6 +29,7 @@ int main()
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetKeyCallback(window, key_callback);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -67,9 +68,8 @@ int main()
 
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-    Field field;
 
-    field.Init();
+    game.Init();
 
 
     float timeValue = glfwGetTime();
@@ -77,17 +77,14 @@ int main()
 
     while(!glfwWindowShouldClose(window))
     {
-        processInput(window);
-
         float curTime = glfwGetTime();
         float dt = timeValue - curTime;
         timeValue = curTime;
 
-        game.update(0.0);
+        game.Update(curTime);
 
-        game.render(0.0);
 
-        field.setData(rand() % 10, rand() % 18, rand() % 100);
+        //field.setData(rand() % 10, rand() % 18, rand() % 100);
 
 
         glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
@@ -99,7 +96,7 @@ int main()
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
-        field.Render();
+        game.Render(dt);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -114,12 +111,28 @@ int main()
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-    glViewport(0, 0, width, height);
+    if ( width > height )
+    {
+        glViewport((width-height)/2, 0, height, height);
+    } else {
+        glViewport(0, (height-width)/2, width, width);
+    }
 }
 
-void processInput(GLFWwindow *window)
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+    {
         glfwSetWindowShouldClose(window, true);
+    }
+
+    if (key >= 0 && key < 1024)
+    {
+        if (action == GLFW_PRESS) {
+            game.Keys[key] = true;
+        }
+        else if (action == GLFW_RELEASE){
+            game.Keys[key] = false;
+        }
     }
 }
