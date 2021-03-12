@@ -84,8 +84,6 @@ int main()
         game.Update(curTime);
 
 
-        //field.setData(rand() % 10, rand() % 18, rand() % 100);
-
 
         glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
@@ -128,10 +126,16 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
     if (key >= 0 && key < 1024)
     {
+        float time = glfwGetTime();
+
         if (action == GLFW_PRESS) {
+            if (!game.Keys[key]) {
+                game.KeyPressedSince[key] = time;
+            }
             game.Keys[key] = true;
         }
         else if (action == GLFW_RELEASE){
+            game.KeyPressedSince[key] = 0;
             game.Keys[key] = false;
         }
     }

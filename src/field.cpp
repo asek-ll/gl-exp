@@ -65,9 +65,9 @@ bool Field::IsValidShape(Shape &shape, int shapeX, int shapeY) {
     return true;
 }
 
-void Field::FreezeShape(Shape &shape, int color) {
+void Field::FreezeShape(Shape &shape) {
 
-    for ( int i = 0; i < 16; ++i )
+    for ( size_t i = 0; i < 16; ++i )
     {
         int x = shape.X + i % 4;
         int y = Heigth - (shape.Y + i / 4) - 1;
@@ -75,8 +75,32 @@ void Field::FreezeShape(Shape &shape, int color) {
         if ( shape.Data[i] )
         {
 
-            data[y * Width + x] = color;
-            setData(x, y, color);
+            data[y * Width + x] = shape.Color;
+            setData(x, y, shape.Color);
+        }
+    }
+
+    size_t dest = 0;
+    for ( int i = dest; i < Heigth; ++i )
+    {
+        bool isComplete = true;
+        for ( size_t j = 0; j < Width; ++j )
+        {
+          if (!data[i * Width + j]) {
+            isComplete = false;
+            break;
+          }
+        }
+        if (dest != i) {
+          std::copy(&data[i * Width], &data[i * Width + Width], &data[dest * Width]);
+
+          for ( size_t j = 0; j < Width; ++j )
+          {
+            vertices[(dest * Width + j) * 3 + 2] = vertices[(i * Width + j) * 3 + 2];
+          }
+        }
+        if (!isComplete) {
+          dest++;
         }
     }
 
@@ -86,7 +110,7 @@ void Field::FreezeShape(Shape &shape, int color) {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void Field::WithShape(Shape &shape, int color) {
+void Field::WithShape(Shape &shape) {
 
     for ( int i = 0; i < 16; ++i )
     {
@@ -95,7 +119,7 @@ void Field::WithShape(Shape &shape, int color) {
 
         if ( shape.Data[i] )
         {
-            setData(x, y, color);
+            setData(x, y, shape.Color);
         }
     }
 

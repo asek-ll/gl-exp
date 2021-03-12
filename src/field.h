@@ -26,8 +26,8 @@ public:
   void Init();
   void Render();
   bool IsValidShape(Shape &shape, int x, int y);
-  void FreezeShape(Shape &shape, int color);
-  void WithShape(Shape &shape, int color);
+  void FreezeShape(Shape &shape);
+  void WithShape(Shape &shape);
 };
 
 #endif /* __FIELD_H__ */

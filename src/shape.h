@@ -1,87 +1,153 @@
 #ifndef __SHAPE_H__
 #define __SHAPE_H__
+#include <cstdlib>
 
 enum ShapeType {L, J, O, I, T, S, Z};
 
 const int rotationsCount[] = {
-  4, 4, 1, 2, 4, 2, 2
+    4, 4, 1, 2, 4, 2, 2
+};
+
+const int shapeIndex[] = {
+    0, 4, 8, 9, 11, 15, 17
 };
 
 const bool shapes[][16] = {
-{   0, 1, 0, 0,
-    0, 1, 0, 0,
-    0, 1, 1, 0,
-    0, 0, 0, 0
-},
-{   0, 0, 0, 0,
-    0, 0, 1, 0,
-    1, 1, 1, 0,
-    0, 0, 0, 0
-},
-{   0, 1, 1, 0,
-    0, 0, 1, 0,
-    0, 0, 1, 0,
-    0, 0, 0, 0
-},
-{   0, 0, 0, 0,
-    1, 1, 1, 0,
-    1, 0, 0, 0,
-    0, 0, 0, 0
-}
+    {   0, 1, 0, 0,
+        0, 1, 0, 0,
+        0, 1, 1, 0,
+        0, 0, 0, 0
+    },
+    {   0, 0, 0, 0,
+        0, 0, 1, 0,
+        1, 1, 1, 0,
+        0, 0, 0, 0
+    },
+    {   0, 1, 1, 0,
+        0, 0, 1, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 0
+    },
+    {   0, 0, 0, 0,
+        1, 1, 1, 0,
+        1, 0, 0, 0,
+        0, 0, 0, 0
+    },
+    {   0, 0, 1, 0,
+        0, 0, 1, 0,
+        0, 1, 1, 0,
+        0, 0, 0, 0
+    },
+    {   0, 0, 0, 0,
+        1, 1, 1, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 0
+    },
+    {   0, 1, 1, 0,
+        0, 1, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 0, 0
+    },
+    {   0, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 1, 1, 1,
+        0, 0, 0, 0
+    },
+    {   0, 1, 1, 0,
+        0, 1, 1, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0
+    },
+    {   0, 1, 0, 0,
+        0, 1, 0, 0,
+        0, 1, 0, 0,
+        0, 1, 0, 0
+    },
+    {   0, 0, 0, 0,
+        1, 1, 1, 1,
+        0, 0, 0, 0,
+        0, 0, 0, 0
+    },
+    {   0, 1, 0, 0,
+        1, 1, 1, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0
+    },
+    {   0, 1, 0, 0,
+        0, 1, 1, 0,
+        0, 1, 0, 0,
+        0, 0, 0, 0
+    },
+    {   0, 0, 0, 0,
+        1, 1, 1, 0,
+        0, 1, 0, 0,
+        0, 0, 0, 0
+    },
+    {   0, 1, 0, 0,
+        1, 1, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 0, 0
+    },
+    {   0, 1, 1, 0,
+        1, 1, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0
+    },
+    {   0, 1, 0, 0,
+        0, 1, 1, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 0
+    },
+    {   1, 1, 0, 0,
+        0, 1, 1, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0
+    },
+    {   0, 0, 1, 0,
+        0, 1, 1, 0,
+        0, 1, 0, 0,
+        0, 0, 0, 0
+    }
 };
 
-const bool jShapes[][16] = {
-{   0, 0, 1, 0,
-    0, 0, 1, 0,
-    0, 1, 1, 0,
-    0, 0, 0, 0
-},
-{   0, 0, 0, 0,
-    1, 1, 1, 0,
-    0, 0, 1, 0,
-    0, 0, 0, 0
-},
-{   0, 1, 1, 0,
-    0, 1, 0, 0,
-    0, 1, 0, 0,
-    0, 0, 0, 0
-},
-{   0, 0, 0, 0,
-    0, 1, 0, 0,
-    0, 1, 1, 1,
-    0, 0, 0, 0
-}
-};
-
-const bool oShapes[][16] = {
-{   0, 1, 1, 0,
-    0, 1, 1, 0,
-    0, 0, 0, 0,
-    0, 0, 0, 0
-}
-};
 
 class Shape {
-ShapeType Type;
+    ShapeType Type;
     int type;
     int rotation;
 public:
     bool const *Data;
     int X;
     int Y;
+    int Color;
 
 
-    Shape(): type(0), rotation(0), Data(shapes[0]) {}
-    Shape(int _type, int _rotation): type(_type), rotation(_rotation), Data(shapes[_rotation]) {}
+    Shape() {
+      Random();
+    } 
+
+    Shape(int _type, int _rotation, int _color):
+        type(_type),
+        rotation(_rotation),
+        Data(shapes[shapeIndex[_type]+_rotation]),
+        Color(_color){}
+
+
+    void Random() {
+      type = rand() % 7;
+      rotation = rand() % rotationsCount[type];
+      Data = shapes[shapeIndex[type]+rotation];
+      Color = rand() % 100;
+    }
 
 
     Shape Rotate() {
-      Shape newShape(0, (rotation+1)%4);
+        Shape newShape(type, (rotation+1) % rotationsCount[type], Color);
 
-      newShape.X = X;
-      newShape.Y = Y;
+        newShape.X = X;
+        newShape.Y = Y;
 
-      return newShape;
+        return newShape;
     }
 };
 
