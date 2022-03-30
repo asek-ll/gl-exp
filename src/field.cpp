@@ -127,3 +127,21 @@ void Field::WithShape(Shape &shape) {
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
+
+void Field::ClearShape(Shape &shape) {
+
+    for ( int i = 0; i < 16; ++i )
+    {
+        int x = shape.X + i % 4;
+        int y = Heigth - (shape.Y + i / 4) - 1;
+
+        if ( shape.Data[i] )
+        {
+            setData(x, y, 0);
+        }
+    }
+
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}

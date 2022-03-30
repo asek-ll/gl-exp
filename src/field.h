@@ -28,6 +28,7 @@ public:
   bool IsValidShape(Shape &shape, int x, int y);
   void FreezeShape(Shape &shape);
   void WithShape(Shape &shape);
+  void ClearShape(Shape &shape);
 };
 
 #endif /* __FIELD_H__ */

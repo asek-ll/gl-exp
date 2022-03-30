@@ -137,7 +137,7 @@ public:
       type = rand() % 7;
       rotation = rand() % rotationsCount[type];
       Data = shapes[shapeIndex[type]+rotation];
-      Color = rand() % 100;
+      Color = rand() % 80 + 20;
     }
 
 

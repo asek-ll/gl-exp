@@ -41,7 +41,7 @@ void Game::Update(float time) {
     if (time - lastMoveTime > 0.5) {
 
         if (field.IsValidShape(currentShape, currentShape.X, currentShape.Y + 1)) {
-            field.WithShape(currentShape);
+            field.ClearShape(currentShape);
             currentShape.Y++;
             field.WithShape(currentShape);
         } else {
@@ -66,21 +66,21 @@ void Game::Update(float time) {
     if ( isKeyPressed(GLFW_KEY_LEFT, time)  )
     {
         if (field.IsValidShape(currentShape, currentShape.X-1, currentShape.Y)) {
-            field.WithShape(currentShape);
+            field.ClearShape(currentShape);
             currentShape.X--;
             field.WithShape(currentShape);
         }
     } else if ( isKeyPressed(GLFW_KEY_RIGHT, time) )
     {
         if (field.IsValidShape(currentShape, currentShape.X+1, currentShape.Y)) {
-            field.WithShape(currentShape);
+            field.ClearShape(currentShape);
             currentShape.X++;
             field.WithShape(currentShape);
         }
     } else if ( isKeyPressed(GLFW_KEY_DOWN, time, 0.1, 0.01) )
     {
         if (field.IsValidShape(currentShape, currentShape.X, currentShape.Y+1)) {
-            field.WithShape(currentShape);
+            field.ClearShape(currentShape);
             currentShape.Y++;
             field.WithShape(currentShape);
         }
@@ -88,7 +88,7 @@ void Game::Update(float time) {
     {
         Shape nextShape = currentShape.Rotate();
         if (field.IsValidShape(nextShape, currentShape.X, currentShape.Y)) {
-            field.WithShape(currentShape);
+            field.ClearShape(currentShape);
             field.WithShape(nextShape);
             currentShape = nextShape;
         }
