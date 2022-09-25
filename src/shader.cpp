@@ -2,7 +2,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "shader.h"
+#include "shader.hpp"
 
 void readFileContent(const char *path, std::stringstream &ss) {
   std::ifstream ifs;

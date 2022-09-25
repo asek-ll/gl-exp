@@ -1,8 +1,9 @@
-#include "field.h"
+#include "field.hpp"
 
 void Field::Init() {
-  this->shader = new ShaderProgram("../shaders/field.vert", "../shaders/field.frag",
-                                   "../shaders/field.geom");
+  this->shader =
+      new ShaderProgram("../shaders/field.vert", "../shaders/field.frag",
+                        "../shaders/field.geom");
 
   for (std::size_t i = 0; i < Heigth; ++i) {
     for (std::size_t j = 0; j < Width; ++j) {

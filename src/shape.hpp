@@ -1,5 +1,6 @@
 #ifndef __SHAPE_H__
 #define __SHAPE_H__
+
 #include <cstdlib>
 
 enum ShapeType { L, J, O, I, T, S, Z };

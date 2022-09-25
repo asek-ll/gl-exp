@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 project(OglBib)
 file(GLOB SOURCES
-    "${PROJECT_SOURCE_DIR}/src/*.h"
+    "${PROJECT_SOURCE_DIR}/src/*.hpp"
     "${PROJECT_SOURCE_DIR}/src/*.cpp"
 )
 

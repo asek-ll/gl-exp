@@ -1,8 +1,8 @@
 #ifndef __GAME_H__
 #define __GAME_H__
 
-#include "field.h"
-#include "shape.h"
+#include "field.hpp"
+#include "shape.hpp"
 
 class Game {
   Field field;
@@ -11,6 +11,9 @@ class Game {
   bool isKeyPressed(int key, float time, float cd, float cds);
 
 public:
+  Game() {}
+  Game(const Game &game) = delete;
+
   bool Keys[1024];
   float KeyPressedSince[1024];
   float KeyProcessedAt[1024];

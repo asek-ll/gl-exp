@@ -1,8 +1,8 @@
 #ifndef __FIELD_H__
 #define __FIELD_H__
 
-#include "shader.h"
-#include "shape.h"
+#include "shader.hpp"
+#include "shape.hpp"
 #include <cstddef>
 #include <glad/glad.h>
 
