@@ -1,6 +1,6 @@
 #include "game.hpp"
-#include <GLFW/glfw3.h>
 
+#include <GLFW/glfw3.h>
 
 void Game::Init() {
   field.Init();
@@ -43,13 +43,20 @@ void Game::Update(float time) {
     } else {
       field.FreezeShape(currentShape);
 
-      currentShape.X = 3;
-      currentShape.Y = 0;
       currentShape.Random();
+      int yStart = -2;
+      for (; yStart <= 0; ++yStart) {
+        if (field.IsValidShape(currentShape, 3, yStart)) {
+          break;
+        }
+      }
+
+      currentShape.X = 3;
+      currentShape.Y = yStart;
 
       field.WithShape(currentShape);
       if (Keys[GLFW_KEY_DOWN]) {
-        KeyPressedSince[GLFW_KEY_DOWN] = time;
+        KeyPressedSince[GLFW_KEY_DOWN] = time + 100;
       }
     }
 

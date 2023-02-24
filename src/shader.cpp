@@ -43,22 +43,17 @@ GLuint loadAndCompileShader(const char *path, const GLenum type) {
   return compileShader(type, shaderStream.str().c_str());
 }
 
-ShaderProgram::ShaderProgram(const char *vertexPath, const char *fragmentPath,
-                             const char *geometryPath) {
+GLuint compileProgram(const std::vector<ShaderFile> &files) {
 
-  auto vertexId = loadAndCompileShader(vertexPath, GL_VERTEX_SHADER);
-  auto fragmentId = loadAndCompileShader(fragmentPath, GL_FRAGMENT_SHADER);
+  auto id = glCreateProgram();
 
-  id = glCreateProgram();
+  std::vector<GLuint> shaderIds;
+  shaderIds.reserve(files.size());
 
-  glAttachShader(id, vertexId);
-  glAttachShader(id, fragmentId);
-
-  GLuint geometryId;
-
-  if (geometryPath != nullptr) {
-    geometryId = loadAndCompileShader(geometryPath, GL_GEOMETRY_SHADER);
-    glAttachShader(id, geometryId);
+  for (auto &file : files) {
+    auto shaderId = file.Compile();
+    glAttachShader(id, shaderId);
+    shaderIds.push_back(shaderId);
   }
 
   glLinkProgram(id);
@@ -70,12 +65,16 @@ ShaderProgram::ShaderProgram(const char *vertexPath, const char *fragmentPath,
               << infoLog << std::endl;
   }
 
-  glDeleteShader(vertexId);
-  glDeleteShader(fragmentId);
-
-  if (geometryPath != nullptr) {
-    glDeleteShader(geometryId);
+  for (auto shaderId : shaderIds) {
+    glDeleteShader(shaderId);
   }
+
+  return id;
+}
+
+ShaderProgram::ShaderProgram(const std::vector<ShaderFile> files_)
+    : files(files_) {
+  id = compileProgram(files);
 }
 
 void ShaderProgram::use() const { glUseProgram(this->id); }
@@ -88,4 +87,15 @@ void ShaderProgram::setInt(const char *name, int value) const {
 }
 void ShaderProgram::setFloat(const char *name, float value) const {
   glUniform1f(glGetUniformLocation(this->id, name), value);
+}
+
+void ShaderProgram::Reload() {
+  glDeleteProgram(this->id);
+  id = compileProgram(files);
+}
+
+GLuint ShaderFile::Compile() const {
+  std::stringstream shaderStream;
+  readFileContent(path, shaderStream);
+  return compileShader(type, shaderStream.str().c_str());
 }
