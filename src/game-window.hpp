@@ -21,19 +21,35 @@ public:
 
     while (!glfwWindowShouldClose(window_)) {
       float curr_time = glfwGetTime();
-      float dt = prev_time - curr_time;
+      float dt = curr_time - prev_time;
       prev_time = curr_time;
 
       state.Update(dt);
 
-      glClearColor(0.1f, 0.0f, 0.0f, 0.5f);
-      glClear(GL_COLOR_BUFFER_BIT);
       renderer.Render(dt);
-      glfwSwapBuffers(window_);
 
+      glfwSwapBuffers(window_);
       glfwPollEvents();
     }
   }
 };
+
+template <typename S, typename R, typename W>
+void RunMainCycle(S state, R renderer, W window) {
+  float prev_time = glfwGetTime();
+
+  while (!window.ShouldClose()) {
+    float curr_time = glfwGetTime();
+    float dt = curr_time - prev_time;
+    prev_time = curr_time;
+
+    state.Update(dt);
+
+    renderer.Render(dt);
+
+    window.SwapBuffers();
+    window.PollEvents();
+  }
+}
 
 #endif /* end of include guard: __GAME_WINDOW_H__ */

@@ -1,7 +1,8 @@
 #include "field-renderer.hpp"
+#include <iostream>
 
-FieldRenderer::FieldRenderer(FieldModel &model)
-    : fieldModel(model),
+FieldRenderer::FieldRenderer(std::shared_ptr<FieldModel> model)
+    : field_model_(model),
       shader({{"../shaders/field.vert", GL_VERTEX_SHADER},
               {"../shaders/field.frag", GL_FRAGMENT_SHADER},
               {"../shaders/field.geom", GL_GEOMETRY_SHADER}}) {
@@ -33,14 +34,15 @@ FieldRenderer::FieldRenderer(FieldModel &model)
 
   glBindVertexArray(0);
 
-  fieldModel.OnChange(std::bind(&FieldRenderer::OnUpdate, this));
+  field_model_->OnChange(std::bind(&FieldRenderer::OnUpdate, this));
+  OnUpdate();
 };
 
 void FieldRenderer::OnUpdate() {
   for (int y = 0; y < FieldModel::H; ++y) {
     for (size_t x = 0; x < FieldModel::W; ++x) {
       std::size_t offset = (FieldModel::W * y + x) * 3 + 2;
-      vertices[offset] = fieldModel.GetData(x, y) / 100.0;
+      vertices[offset] = field_model_->GetData(x, y) / 100.0;
     }
   }
 

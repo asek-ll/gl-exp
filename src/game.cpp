@@ -80,6 +80,7 @@ void Game::Update(float time) {
       field.ClearShape(currentShape);
       currentShape.Y++;
       field.WithShape(currentShape);
+      lastMoveTime = time;
     }
   } else if (isKeyPressed(GLFW_KEY_UP, time, 0.2f, 0.15f)) {
     Shape nextShape = currentShape.Rotate();
